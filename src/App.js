@@ -1,25 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import styles from "./App.module.scss";
+import { ChakraProvider } from "@chakra-ui/react";
+import { CommentsItems } from "./components/Comments/CommentsItems";
+import { useEffect, useState } from "react";
+import {
+  getComments,
+  getUsers,
+  initalComment,
+  initialUser,
+  setComments,
+  setUsers,
+} from "./utils";
+import { AddComment } from "./components/AddComment/AddComment";
+import _ from "lodash";
 
-function App() {
+export function App() {
+  const [itemsState, setItemsState] = useState(getComments());
+
+  useEffect(() => {
+    _.isEmpty(getComments()) && setComments(initalComment);
+    !getUsers() && setUsers(initialUser);
+  }, [itemsState]);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ChakraProvider>
+      <div className={styles.wrapper}>
+        <div className={styles.commentsWrapper}>
+          {!_.isEmpty(getComments()) &&
+            Object?.keys(getComments())?.map((item, index) => (
+              <CommentsItems
+                key={index}
+                id={item}
+                setItemsState={setItemsState}
+              />
+            ))}
+          <AddComment setItemsState={setItemsState} />
+        </div>
+      </div>
+    </ChakraProvider>
   );
 }
-
-export default App;
