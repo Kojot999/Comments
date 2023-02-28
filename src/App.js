@@ -18,14 +18,15 @@ export function App() {
 
   useEffect(() => {
     _.isEmpty(getComments()) && setComments(initalComment);
+    _.isEmpty(itemsState) && setItemsState(initalComment);
     !getUsers() && setUsers(initialUser);
   }, [itemsState]);
   return (
     <ChakraProvider>
       <div className={styles.wrapper}>
         <div className={styles.commentsWrapper}>
-          {!_.isEmpty(getComments()) &&
-            Object?.keys(getComments())?.map((item, index) => (
+          {!_.isEmpty(itemsState) &&
+            Object?.keys(itemsState)?.map((item, index) => (
               <CommentsItems
                 key={index}
                 id={item}

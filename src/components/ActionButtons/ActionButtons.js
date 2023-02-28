@@ -15,7 +15,13 @@ import { getUsers } from "../../utils";
 import styles from "../Comments/CommentsItems.module.scss";
 import { EditButton } from "./EditButton/EditButton";
 
-export const ActionButtons = ({ currentPost, handleReplay, handleEdit }) => {
+export const ActionButtons = ({
+  currentPost,
+  handleReply,
+  handleEdit,
+  handleDelete,
+  id,
+}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const curentUser = getUsers();
   const [text, setText] = useState("");
@@ -25,7 +31,12 @@ export const ActionButtons = ({ currentPost, handleReplay, handleEdit }) => {
         {currentPost?.user?.id === curentUser.id && (
           <div className={styles.buttonsHover}>
             <EditButton handleEdit={handleEdit} className={styles.redit} />
-            <Button colorScheme="red" size="sm" className={styles.deleate}>
+            <Button
+              colorScheme="red"
+              size="sm"
+              onClick={handleDelete}
+              className={styles.deleate}
+            >
               🗑️
             </Button>
           </div>
@@ -58,7 +69,7 @@ export const ActionButtons = ({ currentPost, handleReplay, handleEdit }) => {
             <Button
               colorScheme="teal"
               onClick={() => {
-                handleReplay(text);
+                handleReply(text);
                 onClose();
               }}
             >

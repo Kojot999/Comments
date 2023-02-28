@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const getComments = () => {
   return JSON.parse(localStorage.getItem("comments"));
 };
@@ -29,7 +31,7 @@ export const initalComment = {
       total: 0,
       user: [12], //id of diffrent user
     },
-    createdDate: "2023-03-27",
+    createdDate: moment().format("MMMM d, YYYY"),
     parentPost: true,
     releatedComments: {
       initialReplyId: {
@@ -44,7 +46,7 @@ export const initalComment = {
           total: 0,
           user: [13], //id of diffrent user
         },
-        createdDate: "2023-03-27",
+        createdDate: moment().format("MMMM d, YYYY"),
       },
     },
   },

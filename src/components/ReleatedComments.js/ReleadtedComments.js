@@ -21,6 +21,7 @@ export const ReleatedComments = ({ setItemsState, id, parentId }) => {
       [parentId]: {
         ...parentComment,
         releatedComments: {
+          ...parentComment.releatedComments,
           [id]: {
             ...currentPost,
             rate: {
@@ -33,6 +34,22 @@ export const ReleatedComments = ({ setItemsState, id, parentId }) => {
     };
     setComments({ ...allPosts, ...payload });
     setItemsState({ ...allPosts, ...payload });
+  };
+  const handleDelete = (id) => {
+    const findPost = Object.keys(parentComment.releatedComments).filter(
+      (item) => item !== id
+    );
+    const deletePost = Object.fromEntries(
+      findPost.map((item) => [[item], parentComment.releatedComments[item]])
+    );
+    setComments({
+      ...allPosts,
+      [parentId]: { ...parentComment, releatedComments: deletePost },
+    });
+    setItemsState({
+      ...allPosts,
+      [parentId]: { ...parentComment, releatedComments: deletePost },
+    });
   };
 
   return (
@@ -55,7 +72,12 @@ export const ReleatedComments = ({ setItemsState, id, parentId }) => {
                 <Text className={styles.date}>{currentPost.createdDate}</Text>
               </div>
             </div>
-            <ActionButtons handleEdit={handleEdit} currentPost={currentPost} />
+            <ActionButtons
+              handleEdit={handleEdit}
+              currentPost={currentPost}
+              handleDelete={() => handleDelete(id)}
+              id={id}
+            />
           </div>
           <div className={styles.comment}>{currentPost.text}</div>
         </div>

@@ -2,9 +2,9 @@ import { getComments, getUsers, setComments } from "../utils";
 import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
 
-export const useReplayComment = ({ setItemsState, allPosts, parentId }) => {
+export const useReplyComment = ({ setItemsState, allPosts, parentId }) => {
   const parentComment = getComments()[parentId];
-  const handleReplay = (replayText) => {
+  const handleReply = (replyText) => {
     const payload = {
       [parentId]: {
         ...parentComment,
@@ -12,17 +12,17 @@ export const useReplayComment = ({ setItemsState, allPosts, parentId }) => {
           ...parentComment.releatedComments,
           [uuidv4()]: {
             user: getUsers(),
-            text: replayText,
+            text: replyText,
             rate: { total: 0, users: [] },
-            createdDate: moment().format("yyyy-mm-DD"),
+            createdDate: moment().format("MMMM d, YYYY"),
           },
         },
       },
     };
-    !!replayText && setComments({ ...allPosts, ...payload });
-    !!replayText && setItemsState({ ...allPosts, ...payload });
+    !!replyText && setComments({ ...allPosts, ...payload });
+    !!replyText && setItemsState({ ...allPosts, ...payload });
   };
-  return { handleReplay };
+  return { handleReply };
 };
 
 export const useEditComment = ({

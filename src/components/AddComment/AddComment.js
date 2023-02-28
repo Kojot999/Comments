@@ -19,7 +19,7 @@ export const AddComment = ({ setItemsState }) => {
         user: getUsers(),
         text: state,
         rate: { total: 0, users: [] },
-        createdDate: moment().format("yyyy-MM-DD"),
+        createdDate: moment().format("MMMM d, YYYY"),
         parentPost: true,
       },
     };

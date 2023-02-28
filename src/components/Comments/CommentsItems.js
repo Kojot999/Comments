@@ -1,6 +1,6 @@
 import { Avatar, Box, Text } from "@chakra-ui/react";
 import _ from "lodash";
-import { useEditComment, useReplayComment } from "../../hooks";
+import { useEditComment, useReplyComment } from "../../hooks";
 import { getComments, getUsers, setComments } from "../../utils";
 import { ActionButtons } from "../ActionButtons/ActionButtons";
 import { ReleatedComments } from "../ReleatedComments.js/ReleadtedComments";
@@ -9,7 +9,7 @@ import styles from "./CommentsItems.module.scss";
 export const CommentsItems = ({ id, setItemsState }) => {
   const currentPost = getComments()[id];
   const allPosts = getComments();
-  const { handleReplay } = useReplayComment({
+  const { handleReply } = useReplyComment({
     parentId: id,
     setItemsState,
     allPosts,
@@ -34,6 +34,14 @@ export const CommentsItems = ({ id, setItemsState }) => {
     setComments({ ...allPosts, ...payload });
     setItemsState({ ...allPosts, ...payload });
   };
+  const handleDelete = (id) => {
+    const findPost = Object.keys(allPosts).filter((item) => item !== id);
+    const deletePost = Object.fromEntries(
+      findPost.map((item) => [[item], allPosts[item]])
+    );
+    setComments(deletePost);
+    setItemsState(deletePost);
+  };
 
   return (
     <>
@@ -55,9 +63,11 @@ export const CommentsItems = ({ id, setItemsState }) => {
               </div>
             </div>
             <ActionButtons
-              handleReplay={handleReplay}
+              handleReply={handleReply}
               currentPost={currentPost}
               handleEdit={handleEdit}
+              handleDelete={() => handleDelete(id)}
+              id={id}
             />
           </div>
           <div className={styles.comment}>{currentPost.text}</div>
